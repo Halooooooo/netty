@@ -434,7 +434,8 @@ public abstract class MessageAggregator<I, S, C extends ByteBufHolder, O extends
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         if (aggregating && handleIncompleteAggregateDuringClose) {
             ctx.fireExceptionCaught(
-                    new PrematureChannelClosureException("Channel closed while still aggregating message"));
+                    new PrematureChannelClosureException("Channel closed while still aggregating message , "+
+                    +this.currentMessage.content().array().length+" bytes have been received."));
         }
         try {
             // release current message if it is not null as it may be a left-over
